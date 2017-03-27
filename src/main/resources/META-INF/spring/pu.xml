@@ -41,7 +41,7 @@
     <bean id="myEvictor" class="com.gigaspaces.heapprotector.EvictionManager">
     	<property name="gigaSpace" ref="gigaSpace"></property>
     	<property name="tm" ref="transactionManager"></property>
-    	<property name="ec" ref="ec"></property>
+    	<property name="evictionConfig" ref="ec"></property>
     </bean>
     
 </beans>
