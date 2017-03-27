@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:os-core="http://www.openspaces.org/schema/core"
+       xmlns:os-events="http://www.openspaces.org/schema/events"
+       xmlns:os-remoting="http://www.openspaces.org/schema/remoting"
+       xmlns:os-sla="http://www.openspaces.org/schema/sla"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/core/openspaces-core.xsd
+       http://www.openspaces.org/schema/events http://www.openspaces.org/schema/events/openspaces-events.xsd
+       http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/remoting/openspaces-remoting.xsd
+       http://www.openspaces.org/schema/sla http://www.openspaces.org/schema/sla/openspaces-sla.xsd">
+
+    <bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    </bean>
+
+    <!--
+        Space Bean.
+    -->
+    <os-core:space id="space" url="/./mySpace">
+        <os-core:properties>
+            <props>
+                <!-- Use ALL IN CACHE -->
+                <prop key="space-config.engine.cache_policy">1</prop>
+            </props>
+        </os-core:properties>
+    </os-core:space>
+
+	<os-core:giga-space id="gigaSpace" space="space" tx-manager="transactionManager"/>
+
+	<os-core:distributed-tx-manager id="transactionManager" default-timeout="5000" />
+
+	<!--  
+		Application beans  
+	-->
+    <bean id="ec" class="com.gigaspaces.heapprotector.EvictionConfig">    
+    	<property name="evictionStartThreshold"><value>70</value></property>
+    	<property name="evictionStopThreshold"><value>60</value></property>
+    </bean>
+
+    <bean id="myEvictor" class="com.gigaspaces.heapprotector.EvictionManager">
+    	<property name="gs" ref="gigaSpace"></property>
+    	<property name="tm" ref="transactionManager"></property>
+    	<property name="ec" ref="ec"></property>
+    </bean>
+    
+</beans>
