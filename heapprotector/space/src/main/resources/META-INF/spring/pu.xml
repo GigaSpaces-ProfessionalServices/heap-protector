@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:os-core="http://www.openspaces.org/schema/core"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/core/openspaces-core.xsd">
+
+	<bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	</bean>
+
+	<!--
+        Space Bean.
+    -->
+	<os-core:space id="space" url="/./mySpace">
+		<os-core:properties>
+			<props>
+				<!-- Use ALL IN CACHE -->
+				<prop key="space-config.engine.cache_policy">1</prop>
+				<prop key="space-config.engine.memory_usage.high_watermark_percentage">97</prop>
+				<prop key="space-config.engine.memory_usage.write_only_block_percentage">96</prop>
+				<prop key="space-config.engine.memory_usage.write_only_check_percentage">95</prop>
+				<prop key="space-config.engine.memory_usage.low_watermark_percentage">94</prop>
+			</props>
+		</os-core:properties>
+	</os-core:space>
+
+	<os-core:giga-space id="gigaSpace" space="space" tx-manager="transactionManager"/>
+
+	<os-core:distributed-tx-manager id="transactionManager" default-timeout="5000" />
+
+	<!--
+		Application beans
+	-->
+	<bean id="ec" class="com.gigaspaces.heapprotector.EvictionConfig">
+		<property name="evictionStartThreshold"><value>70</value></property>
+		<property name="evictionStopThreshold"><value>66</value></property>
+		<property name="evictionBatchToSleepTimeFactor"><value>64</value></property>
+		<property name="maxEvictionBatchSize"><value>200000</value></property>
+    <property name="maxEvictionCycle"><value>100</value></property>
+		<property name="classInstanceCountThreshold">
+			<map>
+				<entry key="com.gigaspaces.test.heapprotector.domain.Order1" value="1200000,1300000"/>
+				<entry key="com.gigaspaces.test.heapprotector.domain.Order2" value="1300000,1400000"/>
+				<entry key="com.gigaspaces.test.heapprotector.domain.Order3" value="1000000,1100000"/>
+				<entry key="com.gigaspaces.test.heapprotector.domain.Order4" value="900000,1000000"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="myEvictor" class="com.gigaspaces.heapprotector.EvictionManager">
+		<property name="gs" ref="gigaSpace"></property>
+		<property name="tm" ref="transactionManager"></property>
+		<property name="ec" ref="ec"></property>
+	</bean>
+
+</beans>
