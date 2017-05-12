@@ -62,8 +62,8 @@ The explanations for the properties used in the definition of the bean **ec** wh
 | -------- | ---- | ------- |
 | evictionStartThreshold | Integer | upper limit (as percentage) of consumption of the heap memory before custom eviction is started |
 | evictionStopThreshold | Integer | lower limit (as percentage) of consumption of the heap memory before custom eviction is stopped |
-| evictionBatchToSleepTimeFactor | Integer | The cutsom eviction manager helps the garbage collector with it's clean up by introducing a sleep which is influenced by this parameter. The higher this value, the smaller is the sleep time. |
-| maxEvictionBatchSize | Integer | maximum size of the number of object insatnces that get evicted by each eviction call |
+| evictionBatchToSleepTimeFactor | Integer | The custom eviction manager helps the garbage collector with it's clean up by introducing a sleep which is influenced by this parameter. The higher this value, the smaller is the sleep time. |
+| maxEvictionBatchSize | Integer | maximum size of the number of object instances that get evicted by each eviction call |
 | maxEvictionCycle | Integer | maximum number of times custom eviction is done on one clearance cycle |
 | classInstanceCountThreshold | Map | This contains a map of key-value pairs. Each key represents a <b>space class name</b> for which custom eviction will occur, and the value is a <b>String</b> which contains <i>two comma-separated integers</i> representing the desired lower and upper limits between which the count of that space class instance should remain |
 
