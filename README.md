@@ -56,8 +56,7 @@ The following are snippets from the <b>pu.xml</b> for a space in which <b>custom
 
 The bean **ec** contains configuration information pertaining to the custom eviction.
 
-The explanations for the properties used in the definition of the bean **ec** which has the type **
-com.gigaspaces.heapprotector.EvictionConfig** are as follows:
+The explanations for the properties used in the definition of the bean **ec** which has the type **com.gigaspaces.heapprotector.EvictionConfig** are as follows:
 
 | Property | Type | Comment |
 | -------- | ---- | ------- |
