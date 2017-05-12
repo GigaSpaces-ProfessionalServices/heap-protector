@@ -1,6 +1,6 @@
 <h1>Custom Eviction using <font color='blue'>heapprotector</font> package</h1>
 
-heapprotector is a library which allows custom eviction mechamism in a PU.
+heapprotector is a library which allows custom eviction mechamism in a space.
 
 To create the library jar file, simple execute a maven build command:
 
