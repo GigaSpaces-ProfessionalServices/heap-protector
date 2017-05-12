@@ -1,12 +1,22 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gigaspaces.heapprotector</groupId>
     <artifactId>heapprotector</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>heapprotector</name>
-    <packaging>pom</packaging>
-
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <gsVersion>12.0.1</gsVersion>
+        <spring.version>4.1.1.RELEASE</spring.version>
+        <xap.spring.session.version>1.0</xap.spring.session.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+    
     <repositories>
         <repository>
             <id>org.openspaces</id>
@@ -20,19 +30,6 @@
             <url>http://maven-repository.openspaces.org</url>
         </pluginRepository>
     </pluginRepositories>
-
-    <properties>
-        <gsVersion>12.0.1</gsVersion>
-        <spring.version>4.1.1.RELEASE</spring.version>
-        <xap.spring.session.version>1.0</xap.spring.session.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-    <modules>
-        <module>common</module>
-        <module>space</module>
-        <module>test</module>
-    </modules>
 
     <dependencies>
         <dependency>
@@ -54,9 +51,17 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
+    
     <build>
         <defaultGoal>package</defaultGoal>
+         <resources>
+                  <resource>
+                        <directory>src/main/java</directory>
+                        <includes>
+                          <include>**/*.xml</include>
+                        </includes>
+                  </resource>
+                </resources>
         <testResources>
             <testResource>
                 <directory>src/test/java</directory>
@@ -87,5 +92,5 @@
             </plugin>
         </plugins>
     </build>
-
+    
 </project>
