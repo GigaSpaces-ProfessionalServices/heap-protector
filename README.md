@@ -14,8 +14,6 @@ The **heapprotector-1.0.jar** file (present in the **target**) folder needs to b
 
 The following are snippets from the <b>pu.xml</b> for a space in which <b>custom eviction policy</b> is used.
 ```xml
-	<! ... ... ... ->
-    
 	<os-core:space id="space" url="/./mySpace">
 		<os-core:properties>
 			<props>
@@ -54,10 +52,6 @@ The following are snippets from the <b>pu.xml</b> for a space in which <b>custom
 		<property name="tm" ref="transactionManager"></property>
 		<property name="ec" ref="ec"></property>
 	</bean>
-    
-    	<! ... ... ... ->
-
-</pre>
 ```
 
 The bean **ec** contains configuration information pertaining to the custom eviction.
