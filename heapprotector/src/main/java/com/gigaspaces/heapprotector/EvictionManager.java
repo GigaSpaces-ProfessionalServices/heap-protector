@@ -23,18 +23,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 public class EvictionManager implements InitializingBean, NotificationListener, SpaceBeforeBackupListener, SpaceAfterPrimaryListener {
-  private int EVICTION_BATCH_SIZE = 1000;
-//	private final int MAX_EVICTION_BATCH_SIZE = 20000;
-
-  private int CURRENT_YIELD_TIME = 500;
-
-  private int SAMPLING_TIME = 2000;
-
-//	private final int EVICTION_BATCH_TO_SLEEP_TIME_FACTOR = 8;
-
-//  private final int MAX_EVICTION_CYCLS = 100;
-
   private static final Logger logger = Logger.getLogger(EvictionManager.class.getName());
+  private int EVICTION_BATCH_SIZE = 1000;
+  private int CURRENT_YIELD_TIME = 500;
+  private int SAMPLING_TIME = 2000;
+  private long evictionStartValue = 0;
+  private long evictionStopValue = 0;
 
   private GigaSpace gs = null;
   private PlatformTransactionManager tm = null;
@@ -42,8 +36,6 @@ public class EvictionManager implements InitializingBean, NotificationListener, 
   private MemoryPoolMXBean heapMemory = null;
   private EvictionConfig ec = null;
   private AtomicBoolean evictionInProgress = new AtomicBoolean(false);
-  private long evictionStartValue = 0;
-  private long evictionStopValue = 0;
   boolean isPrimary;
 
   private Map<String, Integer> minClassInstanceCountThreshold = new HashMap<String, Integer>();
