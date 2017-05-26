@@ -162,8 +162,7 @@ public class EvictionManager implements InitializingBean, NotificationListener, 
 
     if (type.equals(MemoryNotificationInfo.MEMORY_THRESHOLD_EXCEEDED)) {
 
-      // Run eviction logic only if no other instance of eviction is in
-      // process right now
+      // Run eviction logic only if no other instance of eviction is in process right now
       if (evictionInProgress.compareAndSet(false, true)) {
         // Retrieve Memory Notification information
         CompositeData cd = (CompositeData) n.getUserData();
@@ -209,7 +208,7 @@ public class EvictionManager implements InitializingBean, NotificationListener, 
     int evictionCycle = 0;
 
     // Keep evicting until eviction limit is reached or no obects to evict
-    // or read max eviction iterations
+    // or reached max eviction iterations
     while (currentMemoryUsage > evictionStopValue) {
       evictionCycle++;
       int totalEvicted = 0;
@@ -223,7 +222,7 @@ public class EvictionManager implements InitializingBean, NotificationListener, 
 
         logger.info(" ******* processing class [" + className + "] *******");
 
-        // check if root class
+        // check if root class - don't evict root class instances 
         boolean isBase = SpaceUtil.isBaseClass(gs, className);
 
         if (isBase) {
@@ -266,13 +265,9 @@ public class EvictionManager implements InitializingBean, NotificationListener, 
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         TransactionStatus status = tm.getTransaction(definition);
 
-//				Object obj[] = null;
         try {
           boolean evict = true;
           boolean thresholdEviction = false;
-
-//					System.out.println("maxClassInstanceCountThreshold " + maxClassInstanceCountThreshold);
-//					System.out.println("minClassInstanceCountThreshold " + minClassInstanceCountThreshold);
 
           // check min and max threshold
           int minClassInstanceCountThresholdValue = minClassInstanceCountThreshold.get(className);
@@ -311,16 +306,9 @@ public class EvictionManager implements InitializingBean, NotificationListener, 
           }
 
           if (evict) {
-//						SQLQuery template = new SQLQuery(className, "");
-
-            // won't return anything within the object
-//						template.setProjections("");
-            // Clear data in smaller batches in order to not create lots
-            // of garbage in space and trigger GC activity
             Statement st = connection.createStatement();
             int deletedCount = st.executeUpdate("delete from " + className + " where rownum<" + (EVICTION_BATCH_SIZE + 1));
             st.close();
-//						obj = gs.takeMultiple(template, EVICTION_BATCH_SIZE);
             classEvictedCount.put(className, deletedCount);
             totalEvicted = totalEvicted + deletedCount;
             logger.info("evicted " + deletedCount + " objects - EVICTION_BATCH_SIZE:" + EVICTION_BATCH_SIZE);
@@ -344,7 +332,7 @@ public class EvictionManager implements InitializingBean, NotificationListener, 
 
         logger.info("CURRENT_YIELD_TIME =" + CURRENT_YIELD_TIME + ", totalEvicted = " + totalEvicted);
 
-        // lets sleep allowing GS to do its thing
+        // lets sleep allowing GC to do its thing
         try {
           Thread.sleep(CURRENT_YIELD_TIME);
         } catch (InterruptedException e) {
